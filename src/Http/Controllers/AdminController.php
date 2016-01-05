@@ -3,8 +3,8 @@
 namespace TypiCMS\Modules\Menulinks\Http\Controllers;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use TypiCMS\Modules\Core\Http\Controllers\BaseAdminController;
 use TypiCMS\Modules\Menulinks\Http\Requests\FormRequest;
 use TypiCMS\Modules\Menulinks\Repositories\MenulinkInterface;
@@ -26,10 +26,9 @@ class AdminController extends BaseAdminController
     public function create($menu = null)
     {
         $model = $this->repository->getModel();
-        $selectPages = $this->repository->getPagesForSelect();
 
         return view('menulinks::admin.create')
-            ->with(compact('model', 'menu', 'selectPages'));
+            ->with(compact('model', 'menu'));
     }
 
     /**
@@ -42,10 +41,8 @@ class AdminController extends BaseAdminController
      */
     public function edit($menu = null, $model = null)
     {
-        $selectPages = $this->repository->getPagesForSelect();
-
         return view('menulinks::admin.edit')
-            ->with(compact('model', 'menu', 'selectPages'));
+            ->with(compact('model', 'menu'));
     }
 
     /**
@@ -121,7 +118,7 @@ class AdminController extends BaseAdminController
      */
     public function sort()
     {
-        $this->repository->sort(Input::all());
+        $this->repository->sort(Request::all());
 
         return response()->json([
             'error'   => false,
